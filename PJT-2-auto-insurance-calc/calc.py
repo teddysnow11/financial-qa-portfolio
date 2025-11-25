@@ -9,7 +9,8 @@ def get_standard_premium(car_type: str) -> int:
     """차종에 따른 표준(기준) 보험료 반환"""
     return STANDARD_PREMIUMS.get(car_type, 0)
 
-def calculate_surcharge_rate(accidents_3yr: int, accidents_1yr: int) -> float:    """사고 건수에 따른 할증 계수 산출 로직"""
+def calculate_surcharge_rate(accidents_3yr: int, accidents_1yr: int) -> float:
+    """사고 건수에 따른 할증 계수 산출 로직"""
     rate = 1.0
     if accidents_1yr > 0:
         rate += SURCHARGE_RATES["1yr_accident"]
@@ -17,7 +18,8 @@ def calculate_surcharge_rate(accidents_3yr: int, accidents_1yr: int) -> float:  
         rate += (accidents_3yr * SURCHARGE_RATES["3yr_accident"])
     return rate
 
-def validate_age_limit(user_age: int, selected_age_code: str) -> bool:    """운전자 연령 한정 위반 여부 검증"""
+def validate_age_limit(user_age: int, selected_age_code: str) -> bool:
+    """운전자 연령 한정 위반 여부 검증"""
     min_age_map = {
         "AG_0000": 0, "AG_0021": 21, "AG_0026": 26, 
         "AG_0035": 35, "AG_0048": 48
@@ -27,7 +29,7 @@ def validate_age_limit(user_age: int, selected_age_code: str) -> bool:    """운
         return False
     return True
 
-def calculdef calculate_discount_rate(selected_specials: list) -> float:ate_discount_rate(selected_specials):
+def calculate_discount_rate(selected_specials: list) -> float:
     """선택된 특약들의 총 할인율 합산"""
     total_discount = 0.0
     for special in selected_specials:
@@ -35,12 +37,14 @@ def calculdef calculate_discount_rate(selected_specials: list) -> float:ate_disc
         total_discount += rate
     return total_discount
 
-def validate_conflict_specials(selected_specials: list) -> tuple:    """[Ticket #3] 상충되는 특약(Conflict) 동시 가입 방지 로직"""
+def validate_conflict_specials(selected_specials: list) -> tuple:
+    """[Ticket #3] 상충되는 특약(Conflict) 동시 가입 방지 로직"""
     if "tmap" in selected_specials and "connected_car_safe" in selected_specials:
         return False, "티맵 안전운전과 커넥티드카 '안전운전' 특약은 중복해서 가입할 수 없어요."
     return True, "Pass"
 
-def calculate_final_premium(car_type: str, user_age: int, age_code: str, acc_3yr: int, acc_1yr: int, specials: list) -> str:    """[Final] 메인 계산 엔진"""
+def calculate_final_premium(car_type: str, user_age: int, age_code: str, acc_3yr: int, acc_1yr: int, specials: list) -> str:
+    """[Final] 메인 계산 엔진"""
     print(UX_MESSAGES["loading_start"])
     time.sleep(1)
     
