@@ -6,7 +6,7 @@ STANDARD_PREMIUMS = {
     "ray": 737210,      # 소형A (레이)
     "avante": 900810,   # 중형 (아반떼)
     "grandeur": 702540  # 대형 (그랜저)
-}
+}    
 
 # 2. 사고 건수별 할증 요율 (Surcharge Rates)
 # [Security Notice] 실제 요율은 대외비이므로 '가상의 시뮬레이션 값' 사용

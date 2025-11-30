@@ -11,3 +11,12 @@ KB손해보험의 **'정교한 도메인 로직(안정성)'**과 Toss의 **'사�
 ### 🛠 기술 스택 (Tech Stack)
 - **Language:** Python 3.x
 - **Cooperation:** Git Flow (Feature/Fix/Refactor), Issue Tracking
+
+## 🚀 Technical Challenge: 레거시(Legacy)와 모던(Modern) 시스템 데이터 정합성 검증
+
+**[Issue] 레거시(Legacy)와 모던(Modern) 시스템 간 데이터 불일치**
+- **상황:** REST API(JSON) 기반의 채널계(Toss)와 WebSquare(XML) 기반의 기간계(KB) 간 데이터 통신 시, **데이터 타입 불일치** 및 **필드 매핑 누락** 리스크를 발견했습니다.
+- **분석:** 실제 네트워크 패킷(Payload)을 분석하여, 양쪽 시스템의 변수명(`joinMall` vs `conn_id`) 매핑 테이블을 도출했습니다.  
+
+**[Solution] Pytest를 활용한 아키텍처 검증**
+- **해결:** `Pytest`를 활용하여 Toss의 JSON 데이터가 KB의 XML 전문 규격(예: `apcno`는 'RQ'로 시작)을 준수하는지 검증하는 **자동화 테스트 시나리오**를 구현했습니다. (`test_json_to_xml_mapping_verification`)

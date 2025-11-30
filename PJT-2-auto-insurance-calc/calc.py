@@ -95,7 +95,7 @@ def calculate_final_premium(car_type: str, user_age: int, age_code: str, acc_3yr
     logging.info(f"✅ 산출 완료 - 최종 금액: {final_price}원")
     
     return f"{UX_MESSAGES['success']} : {format(final_price, ',')}원"
-
+  
 # [Test Code] 시뮬레이션 실행 (직접 실행할 때만 동작)
 if __name__ == "__main__":
     print("\n=== 🚗 KB-Toss 자동차 보험료 산출기 (System Log On) ===\n")
