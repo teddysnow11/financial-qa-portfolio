@@ -62,41 +62,50 @@ def validate_conflict_specials(selected_specials: list) -> tuple:
     return True, "Pass"
 
 def calculate_final_premium(car_type: str, user_age: int, age_code: str, acc_3yr: int, acc_1yr: int, specials: list) -> str:
-    """[Final] 메인 계산 엔진"""
-    
-    # [Log] 계산 요청 기록
-    logging.info(f"▶ 산출 시작 - 차종:{car_type}, 나이:{user_age}, 특약:{specials}")
+    """[Final] 메인 계산 엔진 (Exception Handling 적용)"""
+    try:
+        # [Log] 계산 요청 기록
+        logging.info(f"▶ 산출 시작 - 차종:{car_type}, 나이:{user_age}, 특약:{specials}")
 
-    print(UX_MESSAGES["loading_start"])
-    time.sleep(1)
+        print(UX_MESSAGES["loading_start"])
+        time.sleep(1)
     
-    if not validate_age_limit(user_age, age_code):
-        return f"고객{UX_MESSAGES['error_age']}"
+        # 1. 인수 심사 (Validation)
+        if not validate_age_limit(user_age, age_code):
+            return f"고객{UX_MESSAGES['error_age']}"
     
-    is_valid, msg = validate_conflict_specials(specials)
-    if not is_valid:
-        return f"{UX_MESSAGES['error_conflict']} {msg}"
+        is_valid, msg = validate_conflict_specials(specials)
+        if not is_valid:
+            return f"{UX_MESSAGES['error_conflict']} {msg}"
 
-    print(UX_MESSAGES["loading_calc"])
-    time.sleep(1)
+        print(UX_MESSAGES["loading_calc"])
+        time.sleep(1)
 
-    base = get_standard_premium(car_type)
-    if base == 0:
-        logging.error(f"❌ 잘못된 차종 코드 입력됨: {car_type}")
-        return f"죄송해요, '{car_type}' 차량은 아직 지원하지 않아요."
+        # 2. 요율 산출 (Calculation)
+        base = get_standard_premium(car_type)
+        if base == 0:
+            logging.error(f"❌ 잘못된 차종 코드 입력됨: {car_type}")
+            return f"죄송해요, '{car_type}' 차량은 아직 지원하지 않아요."
 
-    surcharge = calculate_surcharge_rate(acc_3yr, acc_1yr)
-    discount = calculate_discount_rate(specials)
+        surcharge = calculate_surcharge_rate(acc_3yr, acc_1yr)
+        discount = calculate_discount_rate(specials)
     
-    final_rate = surcharge - discount
-    final_price = int(base * final_rate)
+        # 3. 최종 계산
+        final_rate = surcharge - discount
+        final_price = int(base * final_rate)
     
-    # [Log] 최종 결과 기록
-    logging.info(f"✅ 산출 완료 - 최종 금액: {final_price}원")
+        # [Log] 최종 결과 기록
+        logging.info(f"✅ 산출 완료 - 최종 금액: {final_price}원")
     
-    return f"{UX_MESSAGES['success']} : {format(final_price, ',')}원"
-  
-# [Test Code] 시뮬레이션 실행 (직접 실행할 때만 동작)
+        return f"{UX_MESSAGES['success']} : {format(final_price, ',')}원"
+
+    # [사고 수습] except: "...여기서 안전하게 처리해라!"
+    except Exception as e:
+        # 치명적 오류(Critical)로 기록하고, 프로그램 종료 대신 안내 메시지 리턴
+        logging.critical(f"🔥 시스템 치명적 오류 발생: {str(e)}")
+        return "시스템 오류가 발생했습니다. 잠시 후 다시 시도해주세요."
+    
+# [Test Code] 시뮬레이션 실행 
 if __name__ == "__main__":
     print("\n=== 🚗 KB-Toss 자동차 보험료 산출기 (System Log On) ===\n")
     print(f"Case 1: {calculate_final_premium('grandeur', 38, 'AG_0035', 0, 0, ['blackbox', 'children'])}")
