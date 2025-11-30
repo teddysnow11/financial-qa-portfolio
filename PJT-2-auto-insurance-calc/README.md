@@ -20,3 +20,14 @@ KB손해보험의 **'정교한 도메인 로직(안정성)'**과 Toss의 **'사�
 
 **[Solution] Pytest를 활용한 아키텍처 검증**
 - **해결:** `Pytest`를 활용하여 Toss의 JSON 데이터가 KB의 XML 전문 규격(예: `apcno`는 'RQ'로 시작)을 준수하는지 검증하는 **자동화 테스트 시나리오**를 구현했습니다. (`test_json_to_xml_mapping_verification`)
+
+## 💡 Business & UX Strategy: 금융권과 핀테크의 간극 해결
+
+**1. UX Writing (Toss Style)**
+* **As-Is (기존 금융):** "연령 한정 특약 위반으로 가입 불가합니다." (딱딱함, 통보식)
+* **To-Be (개선안):** "고객님은 연령 한정 특약 때문에 가입이 어려워요." (대화형, 거부감 완화)
+* **적용:** `data.py`의 `UX_MESSAGES`에 토스의 톤앤매너를 반영하여 **고객 이탈률(Bounce Rate) 방어 설계**.
+
+**2. Legacy System Latency (KB Style)**
+* **분석:** 구형 기간계 시스템(WebSquare)은 로직 처리에 물리적 시간이 소요됨을 확인.
+* **적용:** `calc.py`에 `time.sleep(1)`을 의도적으로 삽입하여, 실제 금융권 연동 시 발생하는 **'로딩 지연(Latency)'** 상황을 시뮬레이션하고 사용자에게 **안내 문구를 노출**함.
