@@ -50,3 +50,14 @@ UX_MESSAGES = {
     "error_age": "님은 온라인 가입이 어려워요 (연령 한정)",
     "error_conflict": "아쉽지만"
 }
+
+# ---------------------------------------------------------
+# 6. 로깅 설정 (Logging Configuration)
+# [Benchmarks] Naver Logger 구조 벤치마킹 (Dev/Prod 분리)
+# ---------------------------------------------------------
+LOG_CONFIG = {
+    "mode": "DEV",          # DEV(개발) vs PROD(운영)
+    "log_file": "calc_system.log",
+    "log_format": "[%(asctime)s] %(levelname)s: %(message)s",
+    "date_format": "%Y-%m-%d %H:%M:%S"
+}
